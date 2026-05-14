@@ -1467,6 +1467,267 @@ a {
   padding-bottom: clamp(18px, 2.5vh, 24px);
 }
 
+/* ============ SEÇÃO CRONOGRAMA ============ */
+
+.cronograma {
+  position: relative;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(232, 196, 106, 0.08), transparent 55%),
+    radial-gradient(circle at 80% 100%, rgba(201, 169, 111, 0.06), transparent 55%),
+    var(--bg-deep);
+  padding: clamp(80px, 12vw, 140px) clamp(24px, 5vw, 48px);
+  overflow: hidden;
+}
+
+.cronograma::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(280px, 40vw, 520px);
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent-gold-dim) 30%, var(--neon-teal) 50%, var(--accent-gold-dim) 70%, transparent);
+}
+
+.cronograma__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  position: relative;
+}
+
+.cronograma__header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto clamp(56px, 7vw, 88px);
+}
+
+.cronograma__eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  margin-bottom: 22px;
+  padding: 8px 18px;
+  border: 1px solid var(--neon-teal-dim);
+  border-radius: 2px;
+  background: rgba(232, 196, 106, 0.04);
+}
+
+.cronograma__headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+}
+
+.cronograma__sub {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.cronograma__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 5vw, 80px);
+  align-items: start;
+}
+
+.cronograma__coluna {
+  position: relative;
+  padding: clamp(32px, 4vw, 48px) clamp(24px, 3vw, 40px) clamp(36px, 4vw, 52px);
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  background:
+    linear-gradient(180deg, rgba(232, 196, 106, 0.04) 0%, transparent 60%),
+    var(--glass-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.cronograma__coluna::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--neon-teal), transparent);
+  opacity: 0.55;
+}
+
+.cronograma__coluna-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: clamp(28px, 3.5vw, 40px);
+  padding-bottom: clamp(20px, 2.5vw, 28px);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.cronograma__coluna-label {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  margin-bottom: 10px;
+}
+
+.cronograma__coluna-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 60;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.cronograma__lista {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.cronograma__lista::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 4px;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(232, 196, 106, 0.3) 8%,
+    rgba(201, 169, 111, 0.3) 92%,
+    transparent
+  );
+}
+
+.cronograma__item {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: clamp(20px, 2.5vw, 28px);
+}
+
+.cronograma__item:last-child {
+  margin-bottom: 0;
+}
+
+.cronograma__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--neon-teal);
+  box-shadow: 0 0 0 4px rgba(232, 196, 106, 0.12), 0 0 12px rgba(232, 196, 106, 0.4);
+}
+
+.cronograma__item--intervalo::before {
+  background: transparent;
+  border: 1px solid rgba(232, 196, 106, 0.45);
+  box-shadow: none;
+}
+
+.cronograma__item--final::before {
+  background: var(--accent-gold-light);
+  box-shadow: 0 0 0 4px rgba(220, 198, 158, 0.18), 0 0 18px rgba(232, 196, 106, 0.55);
+}
+
+.cronograma__hora {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--neon-teal);
+  margin-bottom: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.cronograma__corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cronograma__tipo {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.cronograma__titulo {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
+  font-weight: 400;
+  font-variation-settings: 'opsz' 36;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.cronograma__item--intervalo .cronograma__tipo,
+.cronograma__item--intervalo .cronograma__titulo {
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.cronograma__item--intervalo .cronograma__titulo {
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  opacity: 0.85;
+}
+
+.cronograma__nota {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-top: clamp(48px, 6vw, 72px);
+}
+
+@media (max-width: 880px) {
+  .cronograma__grid {
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 5vw, 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .cronograma__coluna {
+    padding: 32px 22px 36px;
+  }
+
+  .cronograma__item {
+    padding-left: 24px;
+  }
+}
+
 /* ============ SEÇÃO CTA FINAL ============ */
 
 .cta-final {
