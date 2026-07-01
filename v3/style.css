@@ -402,10 +402,7 @@ a {
 /* Foto */
 .hero__bg {
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 55%;
-  height: 100%;
+  inset: 0;
   z-index: 1;
 }
 
@@ -413,21 +410,22 @@ a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 15%;
+  object-position: center 18%;
 }
 
-/* Gradient: warm dark → teal tint */
+/* Escurece a foto para virar textura de fundo atrás das 2 colunas */
 .hero__bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to right,
-    var(--bg-deep) 0%,
-    rgba(12, 10, 8, 0.88) 25%,
-    rgba(12, 10, 8, 0.45) 55%,
-    rgba(12, 10, 8, 0.18) 100%
-  );
+  background:
+    linear-gradient(
+      to right,
+      var(--bg-deep) 0%,
+      rgba(12, 10, 8, 0.90) 42%,
+      rgba(12, 10, 8, 0.68) 100%
+    ),
+    linear-gradient(to bottom, transparent 55%, var(--bg-deep) 100%);
   pointer-events: none;
 }
 
@@ -473,28 +471,38 @@ a {
 .hero__inner {
   position: relative;
   z-index: 3;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
+  gap: clamp(32px, 4vw, 64px);
   min-height: 100vh;
   min-height: 100dvh;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 clamp(24px, 5vw, 80px);
+  padding: clamp(88px, 12vh, 120px) clamp(24px, 5vw, 80px);
 }
 
 .hero__content {
-  max-width: 620px;
-  padding: clamp(100px, 14vh, 140px) 0 clamp(48px, 8vh, 80px);
-  opacity: 0;
-  transform: translateY(20px);
-  animation: hero-entry 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  max-width: 640px;
 }
 
-@keyframes hero-entry {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Vídeo de vendas (VSL) no hero */
+.hero__media {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+
+.hero__media .yt-embed {
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(232, 196, 106, 0.10);
+}
+
+.hero__cta-nota {
+  margin-top: 14px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
 }
 
 .hero__logo {
@@ -814,16 +822,22 @@ a {
   }
 
   .hero__bg {
-    position: relative;
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: 55vh;
+    height: 100%;
     right: auto;
+  }
+
+  .hero__bg img {
+    object-position: center 16%;
   }
 
   .hero__bg::after {
     background: linear-gradient(
       to bottom,
-      transparent 30%,
+      rgba(12, 10, 8, 0.68) 0%,
+      rgba(12, 10, 8, 0.82) 52%,
       var(--bg-deep) 100%
     );
   }
@@ -836,16 +850,37 @@ a {
     display: none;
   }
 
+  /* Mobile: headline + CTA na dobra, vídeo depois */
   .hero__inner {
+    grid-template-columns: 1fr;
     min-height: auto;
-    padding: 0 clamp(20px, 5vw, 32px);
+    gap: 26px;
+    padding: clamp(24px, 5vh, 40px) clamp(20px, 5vw, 32px) clamp(40px, 7vh, 64px);
   }
 
   .hero__content {
-    padding: 0 0 clamp(48px, 8vh, 80px);
-    margin-top: -100px;
-    position: relative;
-    z-index: 3;
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .hero__logo {
+    margin-bottom: 16px;
+  }
+
+  .hero__logo img {
+    width: 88px;
+  }
+
+  .hero__headline {
+    font-size: clamp(1.9rem, 7.6vw, 2.4rem);
+    line-height: 1.12;
+  }
+
+  .hero__sub {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: 100%;
+    margin-bottom: 22px;
   }
 
   /* CTA full width on mobile */
@@ -1968,8 +2003,7 @@ a {
    V3 — VSL + DEPOIMENTOS + YOUTUBE EMBED
    ============================================ */
 
-/* ---- Eyebrow compartilhado ---- */
-.vsl__eyebrow,
+/* ---- Eyebrow ---- */
 .depoimentos__eyebrow {
   display: inline-block;
   font-family: var(--font-body);
@@ -2077,61 +2111,6 @@ a {
   width: 100%;
   height: 100%;
   border: 0;
-}
-
-/* ---- SEÇÃO VSL ---- */
-.vsl {
-  position: relative;
-  background: var(--bg-elevated);
-  padding: clamp(72px, 11vw, 130px) clamp(24px, 5vw, 48px);
-  overflow: hidden;
-}
-
-.vsl__container {
-  position: relative;
-  z-index: 1;
-  max-width: var(--container-narrow);
-  margin: 0 auto;
-}
-
-.vsl__header {
-  text-align: center;
-  margin-bottom: clamp(32px, 5vh, 48px);
-}
-
-.vsl__headline {
-  font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3.6vw, 2.6rem);
-  font-weight: 400;
-  font-variation-settings: 'opsz' 72;
-  line-height: 1.15;
-  color: var(--text-primary);
-  margin-bottom: 18px;
-}
-
-.vsl__sub {
-  font-size: clamp(0.98rem, 1.4vw, 1.1rem);
-  color: var(--text-secondary);
-  line-height: 1.65;
-  max-width: 620px;
-  margin: 0 auto;
-}
-
-.vsl__video {
-  margin-bottom: clamp(32px, 5vh, 44px);
-}
-
-.vsl__cta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-}
-
-.vsl__cta-nota {
-  font-size: 0.78rem;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
 }
 
 /* ---- SEÇÃO DEPOIMENTOS ---- */
