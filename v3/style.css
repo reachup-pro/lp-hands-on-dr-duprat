@@ -471,34 +471,46 @@ a {
 .hero__inner {
   position: relative;
   z-index: 3;
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: clamp(32px, 4vw, 64px);
+  text-align: center;
+  gap: clamp(26px, 3.5vh, 40px);
   min-height: 100vh;
   min-height: 100dvh;
-  max-width: 1400px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: clamp(88px, 12vh, 120px) clamp(24px, 5vw, 80px);
+  padding: clamp(84px, 11vh, 118px) clamp(24px, 5vw, 48px) clamp(56px, 8vh, 90px);
 }
 
 .hero__content {
-  max-width: 640px;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* Vídeo de vendas (VSL) no hero */
+/* Vídeo de vendas (VSL) no hero — centralizado, entre headline e CTA */
 .hero__media {
   position: relative;
   z-index: 3;
   width: 100%;
+  max-width: 620px;
 }
 
 .hero__media .yt-embed {
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(232, 196, 106, 0.10);
 }
 
+.hero__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 .hero__cta-nota {
-  margin-top: 14px;
+  margin-top: 0;
   font-family: var(--font-body);
   font-size: 0.75rem;
   letter-spacing: 0.05em;
@@ -564,12 +576,13 @@ a {
 /* Headline */
 .hero__headline {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 6.5vw, 5rem);
+  font-size: clamp(2.2rem, 4.8vw, 3.5rem);
   font-weight: 400;
   font-variation-settings: 'opsz' 72;
-  line-height: 1.05;
+  line-height: 1.08;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  max-width: 20ch;
 }
 
 .hero__headline em {
@@ -604,12 +617,13 @@ a {
 
 .hero__sub {
   font-family: var(--font-body);
-  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  font-size: clamp(0.95rem, 1.2vw, 1.08rem);
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.7;
   color: var(--text-secondary);
-  max-width: 500px;
-  margin-bottom: clamp(28px, 4vh, 40px);
+  max-width: 540px;
+  margin-top: clamp(14px, 2vh, 20px);
+  margin-bottom: 0;
 }
 
 /* Divider */
@@ -850,37 +864,38 @@ a {
     display: none;
   }
 
-  /* Mobile: headline + CTA na dobra, vídeo depois */
+  /* Mobile: stack centralizado (headline -> VSL -> CTA) na dobra */
   .hero__inner {
-    grid-template-columns: 1fr;
     min-height: auto;
-    gap: 26px;
-    padding: clamp(24px, 5vh, 40px) clamp(20px, 5vw, 32px) clamp(40px, 7vh, 64px);
+    gap: 18px;
+    padding: clamp(16px, 3.5vh, 28px) clamp(20px, 5vw, 28px) clamp(36px, 6vh, 56px);
   }
 
   .hero__content {
     max-width: 100%;
-    margin-top: 0;
   }
 
   .hero__logo {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .hero__logo img {
-    width: 88px;
+    width: 62px;
   }
 
   .hero__headline {
-    font-size: clamp(1.9rem, 7.6vw, 2.4rem);
+    font-size: clamp(1.55rem, 6.4vw, 2rem);
     line-height: 1.12;
+    max-width: 22ch;
   }
 
+  /* sub oculto no mobile para manter headline + VSL + CTA juntos na dobra */
   .hero__sub {
-    font-size: 0.92rem;
-    line-height: 1.6;
-    max-width: 100%;
-    margin-bottom: 22px;
+    display: none;
+  }
+
+  .hero__media {
+    max-width: 320px;
   }
 
   /* CTA full width on mobile */
@@ -954,12 +969,8 @@ a {
 /* ============ RESPONSIVE: DESKTOP LARGE (≥1200px) ============ */
 
 @media (min-width: 1200px) {
-  .hero__content {
-    padding-left: clamp(0px, 2vw, 40px);
-  }
-
   .hero__headline {
-    font-size: clamp(3.8rem, 5vw, 5rem);
+    font-size: clamp(3rem, 3.6vw, 3.8rem);
   }
 }
 
