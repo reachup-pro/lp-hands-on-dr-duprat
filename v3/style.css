@@ -474,13 +474,14 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: clamp(26px, 3.5vh, 40px);
+  gap: clamp(12px, 1.8vh, 24px);
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: calc(100dvh - 40px);
   max-width: 900px;
   margin: 0 auto;
-  padding: clamp(84px, 11vh, 118px) clamp(24px, 5vw, 48px) clamp(56px, 8vh, 90px);
+  padding: clamp(24px, 3vh, 56px) clamp(24px, 5vw, 48px) clamp(24px, 3vh, 48px);
 }
 
 .hero__content {
@@ -517,12 +518,28 @@ a {
   color: var(--text-muted);
 }
 
+/* Desktop/tablet: vídeo do hero dimensionado pela ALTURA da viewport,
+   para que headline + VSL + CTA caibam em 1 tela sem scroll */
+@media (min-width: 768px) {
+  .hero__media {
+    width: auto;
+    max-width: 100%;
+  }
+
+  .hero__media .yt-embed {
+    width: auto;
+    height: clamp(160px, 23vh, 280px);
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+  }
+}
+
 .hero__logo {
-  margin-bottom: clamp(28px, 4vh, 48px);
+  margin-bottom: clamp(12px, 1.6vh, 18px);
 }
 
 .hero__logo img {
-  width: clamp(130px, 15vw, 200px);
+  width: clamp(64px, 6vw, 84px);
   height: auto;
 }
 
@@ -543,7 +560,7 @@ a {
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-gold);
-  margin-bottom: clamp(20px, 3vh, 28px);
+  margin-bottom: clamp(10px, 1.5vh, 16px);
   width: fit-content;
   animation: pulse-border 3s ease-in-out infinite;
 }
@@ -576,7 +593,7 @@ a {
 /* Headline */
 .hero__headline {
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 4.8vw, 3.5rem);
+  font-size: clamp(2rem, 3.8vw, 3rem);
   font-weight: 400;
   font-variation-settings: 'opsz' 72;
   line-height: 1.08;
@@ -970,7 +987,7 @@ a {
 
 @media (min-width: 1200px) {
   .hero__headline {
-    font-size: clamp(3rem, 3.6vw, 3.8rem);
+    font-size: clamp(2.2rem, 2.5vw, 3rem);
   }
 }
 
