@@ -152,55 +152,26 @@ function renderSpark(name, data, color) {
   state.charts.sparks[name] = makeSparkline(canvas, data, color);
 }
 
-// Venda por anuncio/publico: atribuicao real por telefone e praticamente inexistente na Duprat
-// (lead entra por form/WhatsApp sem carregar o anuncio). Quando nao ha venda real atribuida,
-// estimamos rateando as vendas do periodo (kpis) proporcional aos leads de cada linha. Rotulado com "≈".
-// Grava campos _vendas/_receita/_roas/_cac/_est (idempotente: le sempre os campos reais originais).
-function enrichSalesEst(rows) {
-  const totV = Number(state.kpis && state.kpis.vendas) || 0;
-  const totL = Number(state.kpis && state.kpis.leads) || 0;
-  (rows || []).forEach(a => {
-    const realV = Number(a.vendas) || 0;
-    const spend = Number(a.spend_brl) || 0;
-    if (realV > 0) {
-      a._vendas = realV; a._receita = Number(a.receita_brl) || 0;
-      a._roas = a.roas != null ? Number(a.roas) : null;
-      a._cac = a.cac_brl != null ? Number(a.cac_brl) : null; a._est = false;
-    } else if (totV > 0 && totL > 0) {
-      const v = totV * ((Number(a.leads) || 0) / totL);
-      a._vendas = v; a._receita = v * VALOR_CONSULTA;
-      a._roas = spend > 0 ? a._receita / spend : null;
-      a._cac = v > 0 ? spend / v : null; a._est = true;
-    } else {
-      a._vendas = 0; a._receita = 0; a._roas = spend > 0 ? 0 : null; a._cac = null; a._est = false;
-    }
-  });
-  return rows;
-}
-function fmtVendEst(v, est) {
-  const n = Number(v) || 0;
-  if (!est) return num(n);
-  return '≈ ' + (n >= 10 ? Math.round(n).toLocaleString('pt-BR') : n.toFixed(1).replace('.', ','));
-}
+// Venda por anuncio/publico: SOMENTE atribuicao real do backend (sem estimativa).
+// vendas = leadgen_top_ads.vendas (rastreio telefone->anuncio OU pixel/confirmacao Meta).
+// Cascata exibida igual a de leads: "rast X · pixel Y" + fonte no title. Na Duprat hoje ambos = 0.
 function adCellsHtml(a) {
-  const est = !!a._est;
-  const p = est ? '≈ ' : '';
-  const roas = a._roas;
-  const roasCls = (roas != null && Number(a.spend_brl) > 0) ? (roas >= 1 ? ' class="tbl__num data-good"' : (roas > 0 ? ' class="tbl__num data-bad"' : ' class="tbl__num"')) : ' class="tbl__num"';
-  const ec = est ? ' tbl__est' : '';
+  const roas = a.roas != null ? Number(a.roas) : null;
+  const spend = Number(a.spend_brl) || 0;
+  const roasCls = (roas != null && spend > 0) ? (roas >= 1 ? ' class="tbl__num data-good"' : (roas > 0 ? ' class="tbl__num data-bad"' : ' class="tbl__num"')) : ' class="tbl__num"';
+  const fv = (a.fonte_venda && a.fonte_venda !== 'sem_dados') ? a.fonte_venda : '—';
   return `
     <td class="tbl__num">${brl(a.spend_brl)}</td>
-    <td class="tbl__num${ec}" title="venda: ${escapeHtml(est ? 'estimado por rateio de leads' : (a.fonte_venda || '—'))}">${fmtVendEst(a._vendas, est)}<br><small class="tbl__casc">${est ? 'estimado' : 'atrib ' + num(a.vendas_atrib) + ' · pixel ' + num(a.vendas_pixel)}</small></td>
-    <td class="tbl__num${ec}">${p}${brl(a._receita, { cents: false })}</td>
-    <td${roasCls}>${roas == null ? '—' : p + Number(roas).toFixed(2)}</td>
-    <td class="tbl__num${ec}">${a._cac == null ? '—' : p + brl(a._cac)}</td>
+    <td class="tbl__num" title="venda: ${escapeHtml(fv)}">${num(a.vendas)}<br><small class="tbl__casc">rast ${num(a.vendas_atrib)} · pixel ${num(a.vendas_pixel)}</small></td>
+    <td class="tbl__num">${brl(a.receita_brl, { cents: false })}</td>
+    <td${roasCls}>${roas == null ? '—' : Number(roas).toFixed(2)}</td>
+    <td class="tbl__num">${a.cac_brl == null ? '—' : brl(a.cac_brl)}</td>
     <td class="tbl__num" title="lead: ${escapeHtml(a.fonte_leads || '—')}">${num(a.leads)}<br><small class="tbl__casc">rastr ${num(a.leads_rastreio)} · ger ${num(a.leads_ger)}</small></td>
     <td class="tbl__num">${a.cpl_brl == null ? '—' : brl(a.cpl_brl)}</td>`;
 }
 function renderTopAds() {
   const tbody = document.querySelector('[data-topads-body]'); if (!tbody) return;
   if (!state.topAds.length) { tbody.innerHTML = `<tr><td colspan="9" class="tbl-empty">Sem dados de anuncios no periodo</td></tr>`; return; }
-  enrichSalesEst(state.topAds);
   const { key, dir } = state.sort.topAds;
   tbody.innerHTML = applySort(state.topAds, key, dir).map(a => {
     const _ini = (((a.ad_name || 'AD').match(/[A-Za-z0-9]+/g)) || ['AD']).slice(0, 2).map(w => w[0]).join('').toUpperCase();
@@ -213,7 +184,6 @@ function renderTopAds() {
 function renderTopAudiences() {
   const tbody = document.querySelector('[data-topaudiences-body]'); if (!tbody) return;
   if (!state.topAudiences.length) { tbody.innerHTML = `<tr><td colspan="8" class="tbl-empty">Sem dados de publicos no periodo</td></tr>`; return; }
-  enrichSalesEst(state.topAudiences);
   const { key, dir } = state.sort.topAudiences;
   tbody.innerHTML = applySort(state.topAudiences, key, dir).map(a =>
     `<tr><td>${escapeHtml(a.adset_name || '—')}<br><small style="color:var(--cream-3)">${escapeHtml(a.campaign_name || '')}</small></td>${adCellsHtml(a)}</tr>`).join('');
