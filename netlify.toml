@@ -44,3 +44,12 @@
   for = "*.svg"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Dashboard (subpath /dashboard): token vem no ?k= -> nao vazar via Referer + nao indexar
+[[headers]]
+  for = "/dashboard/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow"

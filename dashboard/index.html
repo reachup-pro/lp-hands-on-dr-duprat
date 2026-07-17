@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#101315">
+  <title>Painel de Resultados · Dr. Duprat</title>
+  <meta name="description" content="Painel de geracao de leads e vendas do Dr. Duprat.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/dashboard/dashboard.css?v=5">
+  <link rel="icon" href="/dashboard/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+<div class="bg-spotlight" aria-hidden="true"></div>
+
+<header class="dash-header">
+  <div class="dash-header__inner">
+    <div class="dash-brand">
+      <svg class="dash-brand__mark" width="56" height="56" viewBox="0 0 56 56" role="img" aria-label="Dr. Duprat">
+        <defs>
+          <linearGradient id="mkg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#171B1E"/><stop offset="1" stop-color="#0B0D0F"/>
+          </linearGradient>
+        </defs>
+        <rect width="56" height="56" rx="14" fill="url(#mkg)"/>
+        <rect x="1.5" y="1.5" width="53" height="53" rx="12.5" fill="none" stroke="#F4BB42" stroke-opacity="0.6"/>
+        <text x="50%" y="55%" dominant-baseline="middle" text-anchor="middle" font-family="Montserrat, system-ui, sans-serif" font-weight="700" font-size="26" fill="#F4BB42">D</text>
+      </svg>
+      <span class="dash-brand__text">
+        <span class="dash-brand__eyebrow">Painel de Performance</span>
+        <strong>Dr. Duprat</strong>
+        <span class="dash-brand__sub">Cirurgia Plástica · Tráfego &amp; Consultas</span>
+      </span>
+    </div>
+    <div class="dash-header__status">
+      <span class="dash-header__clock" data-clock>—</span>
+      <span class="dash-header__live" data-live>ao vivo</span>
+    </div>
+  </div>
+</header>
+
+<main class="dash">
+
+  <!-- 1. HERO: seletor + numeros + resumo (primeira dobra) -->
+  <section class="dash-section">
+    <div class="hero">
+      <!-- seletor de data compacto no topo -->
+      <div class="periodo" role="tablist" aria-label="Periodo">
+        <div class="periodo__chips">
+          <button type="button" class="periodo__chip" data-periodo="hoje" role="tab">Hoje</button>
+          <button type="button" class="periodo__chip" data-periodo="ontem" role="tab">Ontem</button>
+          <button type="button" class="periodo__chip is-active" data-periodo="mtd" role="tab" aria-selected="true">Este mes</button>
+          <button type="button" class="periodo__chip" data-periodo="lastmonth" role="tab">Mes passado</button>
+          <button type="button" class="periodo__chip periodo__chip--custom" data-periodo="custom" role="tab">Personalizado</button>
+        </div>
+        <div class="periodo__dates">
+          <input type="date" data-periodo-de aria-label="Data inicio">
+          <span class="periodo__sep">a</span>
+          <input type="date" data-periodo-ate aria-label="Data fim">
+        </div>
+      </div>
+
+      <div class="hero__body">
+        <div class="hero__main">
+          <span class="hero__big-num skeleton" data-hero-vendas>—</span>
+          <span class="hero__big-label">vendas no periodo (anuncio)</span>
+          <div class="hero__side">
+            <div class="hero__metric"><small>Receita</small><span class="skeleton" data-hero-receita>R$ —</span></div>
+            <div class="hero__metric"><small>Investimento</small><span class="skeleton" data-hero-invest>R$ —</span></div>
+            <div class="hero__metric"><small>Leads</small><span class="skeleton" data-hero-leads>—</span></div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="meta__title">Meta de vendas no mes</div>
+          <div class="meta__track"><div class="meta__fill" data-meta-fill style="width:0%"></div></div>
+          <div class="meta__ticks" data-meta-ticks></div>
+          <div class="meta__status" data-meta-status>—</div>
+        </div>
+      </div>
+
+      <!-- plataformas + agendamentos (resumo geral) -->
+      <div class="hero__strips">
+        <div class="plat-strip">
+          <span class="plat-strip__tag plat-strip__tag--meta">Meta</span>
+          <span data-plat-meta>—</span>
+        </div>
+        <div class="plat-strip">
+          <span class="plat-strip__tag plat-strip__tag--google">Google</span>
+          <span data-plat-google>—</span>
+        </div>
+        <div class="plat-strip">
+          <span class="plat-strip__tag">Agendamentos</span>
+          <span><b data-agend-anuncio>—</b> de anuncio · <span data-agend-total>—</span> total</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. KPIs -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Resultado geral <small>vendas = anuncio (exclui indicacao) · receita = vendas x valor da consulta</small></h2>
+    <div class="kpis">
+      <div class="kpi kpi--accent">
+        <div class="kpi__label">Vendas</div>
+        <div class="kpi__value skeleton" data-kpi-vendas>—</div>
+        <div class="kpi__delta" data-kpi-vendas-delta data-neutral>—</div>
+        <div class="kpi__sub">consultas com sinal pago</div>
+      </div>
+      <div class="kpi kpi--accent">
+        <div class="kpi__label">Receita</div>
+        <div class="kpi__value skeleton" data-kpi-receita>R$ —</div>
+        <div class="kpi__delta" data-kpi-receita-delta data-neutral>—</div>
+        <div class="kpi__sub" data-kpi-receita-sub>—</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__label">Investimento</div>
+        <div class="kpi__value skeleton" data-kpi-invest>R$ —</div>
+        <div class="kpi__delta" data-kpi-invest-delta data-neutral>—</div>
+        <div class="kpi__sub" data-kpi-invest-plat>Meta — · Google —</div>
+        <div class="kpi__spark"><canvas data-spark-invest></canvas></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__label">CAC</div>
+        <div class="kpi__value skeleton" data-kpi-cac>R$ —</div>
+        <div class="kpi__sub">investimento / vendas</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__label">Leads</div>
+        <div class="kpi__value skeleton" data-kpi-leads>—</div>
+        <div class="kpi__delta" data-kpi-leads-delta data-neutral>—</div>
+        <div class="kpi__sub" data-kpi-leads-plat>Meta — · Google —</div>
+        <div class="kpi__badge" data-kpi-leads-fonte>—</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__label">Custo por lead</div>
+        <div class="kpi__value skeleton" data-kpi-cpl>R$ —</div>
+        <div class="kpi__delta" data-kpi-cpl-delta data-neutral>—</div>
+        <div class="kpi__spark"><canvas data-spark-leads></canvas></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi__label">Conversao lead -> venda</div>
+        <div class="kpi__value skeleton" data-kpi-conv>—</div>
+        <div class="kpi__sub">vendas / leads</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LEADS / DIA -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Leads e vendas por dia <small>barra leads · linha vendas · linha investimento</small><span class="chart-fonte" data-chart-fonte></span></h2>
+    <div class="chart-card"><div class="chart-canvas-wrap"><canvas data-chart-leads></canvas></div></div>
+  </section>
+
+  <!-- 5. TOP ANUNCIOS -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Top 10 anuncios <small>somado por nome do anuncio · clique no cabecalho pra ordenar · receita/ROAS/vendas &asymp; estimados por rateio de leads</small><span class="chart-fonte">fonte: Meta Ads</span></h2>
+    <div class="tbl-wrap">
+      <table class="tbl" data-table="topAds">
+        <thead>
+          <tr>
+            <th></th>
+            <th class="tbl__sortable" data-sort-key="ad_name">Anuncio</th>
+            <th class="tbl__num tbl__sortable tbl__sort-active tbl__sort-desc" data-sort-key="spend_brl">Gasto</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_vendas">Vendas</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_receita">Receita</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_roas">ROAS</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_cac">CAC</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="leads">Leads</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="cpl_brl">CPL</th>
+          </tr>
+        </thead>
+        <tbody data-topads-body><tr><td colspan="9" class="tbl-empty">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 6. TOP PUBLICOS -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Top 10 publicos (conjuntos) <small>clique no cabecalho pra ordenar · receita/ROAS/vendas &asymp; estimados por rateio de leads</small><span class="chart-fonte">fonte: Meta Ads</span></h2>
+    <div class="tbl-wrap">
+      <table class="tbl" data-table="topAudiences">
+        <thead>
+          <tr>
+            <th class="tbl__sortable" data-sort-key="adset_name">Conjunto / Campanha</th>
+            <th class="tbl__num tbl__sortable tbl__sort-active tbl__sort-desc" data-sort-key="spend_brl">Gasto</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_vendas">Vendas</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_receita">Receita</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_roas">ROAS</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="_cac">CAC</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="leads">Leads</th>
+            <th class="tbl__num tbl__sortable" data-sort-key="cpl_brl">CPL</th>
+          </tr>
+        </thead>
+        <tbody data-topaudiences-body><tr><td colspan="8" class="tbl-empty">Carregando…</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 7. HEATMAP -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Entrada de leads por horario <small>cor = volume de leads · base no periodo</small><span class="chart-fonte">fonte: Rastreio</span></h2>
+    <div class="heatmap-wrap">
+      <div class="heatmap" data-heatmap>
+        <div class="heatmap__corner"></div>
+        <div class="heatmap__hours" data-heatmap-hours></div>
+        <div class="heatmap__days" data-heatmap-days></div>
+        <div class="heatmap__grid" data-heatmap-grid></div>
+      </div>
+      <div class="heatmap__legend">
+        <span>menos</span><span class="heatmap__legend-bar"></span><span>mais</span>
+        <span class="heatmap__top" data-heatmap-top>—</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. FUNIL DE MIDIA -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Funil de midia <small>impressoes -> cliques -> leads -> vendas</small><span class="chart-fonte" data-funil-fonte></span></h2>
+    <div class="funil">
+      <div class="funil__row" data-funil-impr><span class="funil__label">Impressoes</span><div class="funil__bar"><div class="funil__bar-fill" style="width:0%"></div></div><span class="funil__num skeleton">—</span><span class="funil__pct"></span></div>
+      <div class="funil__row" data-funil-clicks><span class="funil__label">Cliques</span><div class="funil__bar"><div class="funil__bar-fill" style="width:0%"></div></div><span class="funil__num skeleton">—</span><span class="funil__pct">—</span></div>
+      <div class="funil__row" data-funil-leads><span class="funil__label">Leads</span><div class="funil__bar"><div class="funil__bar-fill" style="width:0%"></div></div><span class="funil__num skeleton">—</span><span class="funil__pct">—</span></div>
+      <div class="funil__row" data-funil-vendas><span class="funil__label">Vendas</span><div class="funil__bar"><div class="funil__bar-fill" style="width:0%"></div></div><span class="funil__num skeleton">—</span><span class="funil__pct">—</span></div>
+      <div class="funil-stats">
+        <div><small>CTR</small><b data-funil-ctr>—</b></div>
+        <div><small>CPM</small><b data-funil-cpm>—</b></div>
+        <div><small>CPC</small><b data-funil-cpc>—</b></div>
+        <div><small>Conv. lead -> venda</small><b data-funil-conv-venda>—</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. FUNIL DE ATENDIMENTO -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Funil de atendimento <small>no periodo</small><span class="chart-fonte">fonte: Planilha</span><span class="atend__proj-badge" data-atend-proj-badge hidden>≈ projeção</span></h2>
+    <div class="atend">
+      <div class="atend__funnel">
+        <div class="atend__step"><small>Leads</small><b data-atend-leads>—</b></div>
+        <div class="atend__step" title="agendou = pagou o sinal da consulta"><small>Agendou</small><b data-atend-agendadas>—</b><span data-atend-agendadas-pct></span></div>
+        <div class="atend__step"><small>Compareceu</small><b data-atend-compareceu>—</b><span data-atend-compareceu-pct></span></div>
+        <div class="atend__step"><small>Fechou</small><b data-atend-fechou>—</b><span data-atend-fechou-pct></span></div>
+      </div>
+      <div class="atend__split">
+        <span>Origem: <b data-atend-pago>—</b> anuncio · <b data-atend-indicacao>—</b> indicacao</span>
+        <span>Receita em vendas: <b data-atend-valor>R$ —</b></span>
+      </div>
+      <small data-atend-proj class="atend__proj" hidden></small>
+    </div>
+  </section>
+
+  <!-- 10. FEED -->
+  <section class="dash-section">
+    <h2 class="dash-section__title">Feed de leads <small>ultimos leads rastreados, anonimizados &middot; origem por canal (Instagram / Facebook / Google / Direto)</small></h2>
+    <div class="feed" data-feed><div class="feed-empty">Carregando…</div></div>
+  </section>
+
+  <footer class="dash-footer">
+    <span data-updated>atualizado ha —</span>
+    <span data-health-meta>Meta Ads: —</span>
+    <span data-health-utm>Rastreio: —</span>
+    <span>Dr. Duprat · Reach Up</span>
+  </footer>
+
+</main>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+<script type="module" src="/dashboard/lib/background.js?v=3"></script>
+<script type="module" src="/dashboard/dashboard.js?v=6"></script>
+
+</body>
+</html>
